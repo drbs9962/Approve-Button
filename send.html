@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Update</title>
+</head>
+<body id="bod">
+
+Customer: <br>
+<input type="text" name="p0" id="p0" disabled/><br>
+<input type="text" name="p1" id="p1" disabled/><br>
+<input type="text" name="p2" id="p2" disabled/><br>
+<input type="text" name="p3" id="p3" disabled/><br>
+<input type="text" name="p4" id="p4" disabled/><br>
+<input type="text" name="p5" id="p5" disabled/><br>
+<input type="text" name="p6" id="p6" disabled/><br>
+<!--
+<button type="submit" onclick="send()">Approve</button>
+<div id="div"></div>
+-->
+Update finished. You can close this window.
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', acceptParam);
+
+function send() {
+    var hashParams = window.location.search.substring(1).split('&');
+    var params = {};
+    
+    hashParams.forEach(function(param) {
+        var keyValue = param.split('=');
+        params[keyValue[0]] = decodeURIComponent(keyValue[1]);
+    });
+
+    var ItemJSON = JSON.stringify({
+        Character01: params.Character01
+    });
+
+    var URL = `https://erpimage/erptest/api/v2/odata/EPIC06/Ice.BO.UD09Svc/UD09s('${params.Company}','${params.Key1}','${params.Key2}','${params.Key3}','${params.Key4}','${params.Key5}')`;
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("PATCH", URL, true);
+    xmlhttp.setRequestHeader("X-API-Key", "sHvosJCNWk9rE2whmQ0W7nDgNKn6Yvhsn7AcPVnqv5Bcj");
+    xmlhttp.setRequestHeader("Content-Type", "application/json");
+    xmlhttp.setRequestHeader('Authorization', 'Basic ZXBpY29yOmVwaWNvcg=='); // Remember to secure your credentials in production
+
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4) {
+            document.getElementById("div").innerText = xmlhttp.statusText;
+            // Uncomment to see full response
+            // document.getElementById("div").innerHTML = xmlhttp.statusText + ":" + xmlhttp.status + "<br><textarea rows='10' cols='100'>" + xmlhttp.responseText + "</textarea>";
+        }
+    };
+
+    xmlhttp.send(ItemJSON);
+}
+
+function acceptParam() {
+    var hashParams = window.location.search.substring(1).split('&');
+    var params = {};
+    
+    hashParams.forEach(function(param) {
+        var keyValue = param.split('=');
+        params[keyValue[0]] = decodeURIComponent(keyValue[1]);
+    });
+
+    document.getElementById('p0').value = params.Company;
+    document.getElementById('p1').value = params.Key1;
+    document.getElementById('p2').value = params.Key2;
+    document.getElementById('p3').value = params.Key3;
+    document.getElementById('p4').value = params.Key4;
+    document.getElementById('p5').value = params.Key5;
+    document.getElementById('p6').value = params.Character01;
+
+    send();
+}
+</script>
+</body>
+</html>
